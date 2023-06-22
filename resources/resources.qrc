@@ -1,0 +1,7 @@
+<!--<!DOCTYPE RCC><RCC version="1.0">-->
+<RCC>
+    <qresource>
+        <file>images/modx-logo-color.svg</file>
+        <file>images/modx-logo-text.svg</file>
+    </qresource>
+</RCC>

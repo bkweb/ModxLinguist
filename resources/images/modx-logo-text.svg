@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="319.396px" height="99.174px" viewBox="0 0 319.396 99.174" style="enable-background:new 0 0 319.396 99.174;"
+	 xml:space="preserve">
+<g>
+	<g>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="87.4404" y1="27.3486" x2="51.9278" y2="4.2241">
+			<stop  offset="0" style="stop-color:#80C3E6"/>
+			<stop  offset="1" style="stop-color:#3380C2"/>
+		</linearGradient>
+		<polygon style="fill:url(#SVGID_1_);" points="75.65,41.431 95.557,9.582 47.675,9.582 41.058,20.196 		"/>
+		<polygon style="opacity:0.15;" points="41.062,20.196 44.45,14.747 75.654,41.431 		"/>
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="93.6724" y1="80.752" x2="67.1256" y2="63.2211">
+			<stop  offset="0" style="stop-color:#F38649"/>
+			<stop  offset="0.1849" style="stop-color:#F28147"/>
+			<stop  offset="0.4091" style="stop-color:#EF7242"/>
+			<stop  offset="0.6537" style="stop-color:#EA5A3A"/>
+			<stop  offset="0.911" style="stop-color:#E4382E"/>
+			<stop  offset="1" style="stop-color:#E12A29"/>
+		</linearGradient>
+		<polygon style="fill:url(#SVGID_2_);" points="86.179,99.174 86.179,51.294 75.85,44.838 54.129,79.147 		"/>
+		<polygon style="opacity:0.15;" points="54.129,79.146 59.495,82.496 75.851,44.838 		"/>
+		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="6.1973" y1="43.3027" x2="56.9845" y2="11.5674">
+			<stop  offset="0" style="stop-color:#42AB4A"/>
+			<stop  offset="1" style="stop-color:#ADD155"/>
+		</linearGradient>
+		<polygon style="fill:url(#SVGID_3_);" points="9.058,0 9.058,47.881 20.138,54.336 75.642,41.425 		"/>
+		<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="17.2871" y1="100.1006" x2="58.5691" y2="34.0357">
+			<stop  offset="0" style="stop-color:#42AB4A"/>
+			<stop  offset="1" style="stop-color:#ADD155"/>
+		</linearGradient>
+		<polygon style="fill:url(#SVGID_4_);" points="19.905,57.987 0,89.299 47.881,89.299 75.856,44.838 		"/>
+	</g>
+	<g>
+		<path d="M104.716,72.15h6.201l3.171-39.088h-6.342V27.6h14.092l12.753,30.504c0.775,2.058,1.128,3.618,1.128,3.618h0.141
+			c0,0,0.353-1.561,1.128-3.618L149.74,27.6h14.091v5.463h-6.341l3.171,39.088h6.2v5.533h-19.165V72.15h5.989l-2.255-29.938
+			c-0.07-1.561,0.212-4.113,0.212-4.113h-0.212c0,0-0.563,2.412-1.127,3.83L138.89,68.248h-6.2L121.274,41.93
+			c-0.563-1.418-1.127-3.83-1.127-3.83h-0.212c0,0,0.282,2.553,0.212,4.113l-2.255,29.938h5.988v5.533h-19.165V72.15z"/>
+		<path d="M196.318,26.749c14.375,0,25.576,11.137,25.576,25.537c0,14.756-11.201,26.249-25.576,26.249
+			c-14.443,0-25.576-11.493-25.576-26.249C170.742,37.886,181.875,26.749,196.318,26.749z M196.318,72.222
+			c10.076,0,18.249-8.656,18.249-19.936c0-10.924-8.173-19.295-18.249-19.295c-10.146,0-18.318,8.371-18.318,19.295
+			C178,63.565,186.173,72.222,196.318,72.222z"/>
+		<path d="M226.586,72.15h6.201V33.062h-6.201V27.6h21.209c4.156,0,7.257,0.213,10.568,1.206
+			c9.513,2.979,15.713,11.635,15.713,23.836c0,12.131-5.989,20.573-15.713,23.694c-3.241,1.063-6.553,1.348-10.498,1.348h-21.279
+			V72.15z M247.442,71.866c3.241,0,5.919-0.284,8.455-1.276c6.693-2.342,10.851-8.797,10.851-17.948
+			c0-9.223-4.157-15.678-10.779-18.09c-2.748-0.993-5.285-1.135-8.526-1.135h-7.61v38.449H247.442z"/>
+		<path d="M276.558,72.15h4.649l12.824-19.793l-12.612-19.295h-4.581V27.6h15.752v5.463h-3.703l8.244,13.124
+			c0.775,1.064,1.268,1.986,1.268,1.986h0.143c0,0,0.423-0.922,1.196-1.986l7.963-13.124h-3.563V27.6h15.26v5.463h-4.65
+			l-12.895,19.935l12.684,19.153h4.721v5.533h-15.752V72.15h3.632l-8.314-13.054c-0.775-1.135-1.268-2.057-1.268-2.057h-0.141
+			c-0.071,0-0.423,0.922-1.127,2.057l-8.034,13.054h3.634v5.533h-15.328V72.15z"/>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
