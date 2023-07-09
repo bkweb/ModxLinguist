@@ -55,7 +55,7 @@ Dialog {
                     text: qsTr("Version")
                 }
                 Label {
-                    text: "0.9.0"
+                    text: "0.10.0"
                 }
             }
         }

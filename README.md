@@ -5,6 +5,7 @@ This GUI application is intended to facilitate the handling of MODX (CMS) lexico
 
 Features:
 * import/export translations from/to a *lexicon* directory
+* import from source files (.html, .php)
 * save current selected topic to lexicon files
 * add/edit/delete languages, topics and translations
 * move translations from one topic to another
