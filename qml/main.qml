@@ -39,6 +39,12 @@ ApplicationWindow {
         }
     }
     FolderDialog {
+        id: folderDialogImportFromSourceCodeDirectory
+        onAccepted: {
+            lexiconProcessor.importFromSourceCodeDirectory(currentFolder);
+        }
+    }
+    FolderDialog {
         id: folderDialogOpenLexiconDirectory
         onAccepted: {
             resetPackage();
@@ -249,6 +255,10 @@ ApplicationWindow {
     Connections {
         target: lexiconProcessor
         ignoreUnknownSignals: true
+        function onImportFromSourceCodeDirectoryFinished() {
+            console.log("import processing finished");
+            lexiconProcessor.getTopics();
+        }
         function onImportFromLexiconDirectoryFinished() {
             console.log("import processing finished");
             lexiconProcessor.getTopics();
@@ -385,7 +395,7 @@ ApplicationWindow {
             }
             Action {
                 shortcut: "Ctrl+S"
-                text: qsTr("&Save Current Topic")
+                text: qsTr("&Save Current Topic Ctrl+S")
                 onTriggered: {
                     if (labelLexiconDirectory.text.length > 0) {
                         var topic = listModelTopics.get(comboBoxTopic.currentIndex);
@@ -401,6 +411,11 @@ ApplicationWindow {
                         lexiconProcessor.exportAsFileStructure(labelLexiconDirectory.text);
                     }
                 }
+            }
+            MenuSeparator { }
+            Action {
+                text: qsTr("&Import from Source Code Directory")
+                onTriggered: folderDialogImportFromSourceCodeDirectory.open()
             }
             MenuSeparator { }
             Action {

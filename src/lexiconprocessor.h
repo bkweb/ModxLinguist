@@ -20,6 +20,8 @@ class LexiconProcessor : public QObject
 signals:
     void loadingChanged();
     void emptyDatabase();
+    void importFromSourceCodeDirectory(QString path);
+    void importFromSourceCodeDirectoryFinished();
     void importFromLexiconDirectory(QString path);
     void importFromLexiconDirectoryFinished();
     void exportAsFileStructure(QString path);

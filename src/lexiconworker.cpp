@@ -1,6 +1,7 @@
 #include "lexiconworker.h"
 
 LexiconWorker::LexiconWorker(QObject* parent) : QObject(parent) {
+    ianaLanguages = {"aa", "ab", "ae", "af", "ak", "am", "an", "ar", "as", "av", "ay", "az", "ba", "be", "bg", "bh", "bi", "bm", "bn", "bo", "br", "bs", "ca", "ce", "ch", "co", "cr", "cs", "cu", "cv", "cy", "da", "de", "dv", "dz", "ee", "el", "en", "eo", "es", "et", "eu", "fa", "ff", "fi", "fj", "fo", "fr", "fy", "ga", "gd", "gl", "gn", "gu", "gv", "ha", "he", "hi", "ho", "hr", "ht", "hu", "hy", "hz", "ia", "id", "ie", "ig", "ii", "ik", "in", "io", "is", "it", "iu", "iw", "ja", "ji", "jv", "jw", "ka", "kg", "ki", "kj", "kk", "kl", "km", "kn", "ko", "kr", "ks", "ku", "kv", "kw", "ky", "la", "lb", "lg", "li", "ln", "lo", "lt", "lu", "lv", "mg", "mh", "mi", "mk", "ml", "mn", "mo", "mr", "ms", "mt", "my", "na", "nb", "nd", "ne", "ng", "nl", "nn", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa", "pi", "pl", "ps", "pt", "qu", "rm", "rn", "ro", "ru", "rw", "sa", "sc", "sd", "se", "sg", "sh", "si", "sk", "sl", "sm", "sn", "so", "sq", "sr", "ss", "st", "su", "sv", "sw", "ta", "te", "tg", "th", "ti", "tk", "tl", "tn", "to", "tr", "ts", "tt", "tw", "ty", "ug", "uk", "ur", "uz", "ve", "vi", "vo", "wa", "wo", "xh", "yi", "yo", "za", "zh", "zu"};
 }
 
 QString LexiconWorker::convertJsonToString(const QJsonObject &data) {
@@ -118,6 +119,131 @@ void LexiconWorker::processLexiconFile(int &languageId, int &topicId, QFile &fil
            m_databaseComponent->addEntry(languageId, topicId, translationKey, translation);
 
            emit updatedProcessingFile(fileInfo.fileName() + " - " + translationKey);
+        }
+    }
+}
+
+void LexiconWorker::importFromSourceCodeDirectory(QString path) {
+    // is called on separate thread - the database connection MUST be created on that separate thread
+    if (m_databaseComponent == nullptr) {
+        m_databaseComponent = new DatabaseComponent;
+    }
+
+    // windows: remove path prefix "file:///"
+    path = path.replace("file:///", "");
+
+    qDebug() << "import from" << path;
+
+    emit updatedProcessingFile("importing started...");
+
+    QDirIterator iterator(path, QStringList() << "*.php" << "*.html", QDir::NoFilter, QDirIterator::Subdirectories);
+    while (iterator.hasNext()) {
+        QFile file(iterator.next());
+        QFileInfo fileInfo(file);
+
+        emit updatedProcessingFile(fileInfo.fileName());
+
+        // extract translation keys
+        processSourceCodeFile(file);
+    }
+
+    emit updatedProcessingFile("");
+
+    emit importFromSourceCodeDirectoryFinished();
+
+    emitUpdatedDatabaseStats();
+}
+
+void LexiconWorker::processSourceCodeFile(QFile &file) {
+    file.open(QIODevice::ReadOnly);
+    QFileInfo fileInfo(file);
+
+    QByteArray fileBytes = file.readAll();
+
+    // find translations
+    QStringList regExps;
+    // search in HTML file
+    regExps << "\\Q[[\\E((?:(?:[^\\]\\]\\[\\[]++[\\s\\S]*?|(?R))*?))\\Q]]\\E";
+    // search in PHP file
+    regExps << "->lexicon\\('([^;)]+)'";
+
+    for (int i = 0; i < regExps.count(); i++) {
+        QRegularExpression regularExpressionTranslation(regExps.at(i), QRegularExpression::DotMatchesEverythingOption);
+
+        QRegularExpressionMatchIterator iteratorTranslation = regularExpressionTranslation.globalMatch(fileBytes);
+
+        QString translationNamespace = "";
+        QString translationLanguage = "en";
+        QString translationTopic = "default";
+
+        while (iteratorTranslation.hasNext()) {
+            QRegularExpressionMatch match = iteratorTranslation.next();
+
+            QString found = match.captured(1);
+
+            if (i == 0) { // search in HTML file
+                QString token = found.sliced(0, 1);
+                if (token == "%") {
+                    QStringList parts = found.split("?");
+                    if (parts.count() > 0) {
+                        QString translationKey = parts[0].trimmed().sliced(1);
+                        if (parts.count() == 2) {
+                            QStringList parameters = parts[1].split("&");
+                            for (int x = 0; x < parameters.count(); x++) {
+                                QString parameter = parameters.at(x).trimmed();
+                                QStringList parameterParts = parameter.split("=");
+                                if (parameterParts.count() == 2) {
+                                    QString parameterKey = parameterParts.at(0).trimmed();
+                                    if (parameterKey == "topic") {
+                                        translationTopic = parameterParts.at(1).trimmed().sliced(1).chopped(1);
+                                    } else if (parameterKey == "language") {
+                                        QString temp = parameterParts.at(1).trimmed().sliced(1).chopped(1);
+                                        if (ianaLanguages.indexOf(temp) >= 0) {
+                                            translationLanguage = temp;
+                                        }
+                                    } else if (parameterKey == "namespace") {
+                                        translationNamespace = parameterParts.at(1).trimmed().sliced(1).chopped(1);
+                                    }
+                                }
+                            }
+                        }
+
+                        // add translation
+                        if (translationKey.length() > 0) {
+                            if (!m_databaseComponent->isAlreadyUsedLanguageName(translationLanguage)) {
+                                m_databaseComponent->addLanguage(translationLanguage);
+                            }
+                            if (!m_databaseComponent->isAlreadyUsedTopicName(translationTopic)) {
+                                m_databaseComponent->addTopic(translationTopic);
+                            }
+
+                            int languageId = m_databaseComponent->getLanguageId(translationLanguage);
+                            int topicId = m_databaseComponent->getTopicId(translationTopic);
+
+                            m_databaseComponent->addEntry(languageId, topicId, translationKey, translationKey);
+
+                            emit updatedProcessingFile(fileInfo.fileName() + " - " + translationKey);
+                            //qDebug() << translationKey << translationNamespace << translationTopic << translationLanguage;
+                        }
+                    }
+                }
+            } else { // search in PHP file
+                if (!m_databaseComponent->isAlreadyUsedLanguageName(translationLanguage)) {
+                    m_databaseComponent->addLanguage(translationLanguage);
+                }
+                if (!m_databaseComponent->isAlreadyUsedTopicName(translationTopic)) {
+                    m_databaseComponent->addTopic(translationTopic);
+                }
+
+                int languageId = m_databaseComponent->getLanguageId(translationLanguage);
+                int topicId = m_databaseComponent->getTopicId(translationTopic);
+                QString translationKey = found;
+
+                m_databaseComponent->addEntry(languageId, topicId, translationKey, translationKey);
+
+                emit updatedProcessingFile(fileInfo.fileName() + " - " + translationKey);
+                //qDebug() << found;
+            }
         }
     }
 }

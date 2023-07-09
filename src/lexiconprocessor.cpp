@@ -6,6 +6,18 @@ LexiconProcessor::LexiconProcessor(QObject* parent) : QObject(parent) {
 
     connect(&m_workerThread, &QThread::finished, worker, &QObject::deleteLater);
 
+    // import from source code directory
+    connect(this, &LexiconProcessor::importFromSourceCodeDirectory, this, [=](QString path) {
+        setLoading(true);
+    });
+    connect(this, &LexiconProcessor::importFromSourceCodeDirectory, worker, &LexiconWorker::importFromSourceCodeDirectory);
+
+    // finished importing from source code directory
+    connect(worker, &LexiconWorker::importFromSourceCodeDirectoryFinished, this, [=]() {
+        setLoading(false);
+        emit importFromSourceCodeDirectoryFinished();
+    });
+
     // import from lexicon directory
     connect(this, &LexiconProcessor::importFromLexiconDirectory, this, [=](QString path) {
         setLoading(true);

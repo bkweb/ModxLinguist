@@ -17,13 +17,16 @@ class LexiconWorker : public QObject
     // attributes:
     DatabaseComponent* m_databaseComponent = nullptr;
     QString m_stringLiteralChar = "'";
+    QStringList ianaLanguages;
     // methods:
     QString convertJsonToString(const QJsonObject &data);
     QString convertJsonToString(const QJsonArray &data);
     void processLexiconFile(int &languageId, int &topicId, QFile &file);
+    void processSourceCodeFile(QFile &file);
     void emitUpdatedDatabaseStats();
 signals:
     void importFromLexiconDirectoryFinished();
+    void importFromSourceCodeDirectoryFinished();
     void exportAsFileStructureFinished();
     void saveTopicToFileStructureFinished();
     void updatedDatabaseStats(QString stats);
@@ -51,6 +54,7 @@ signals:
 public slots:
     void emptyDatabase();
     void importFromLexiconDirectory(QString path);
+    void importFromSourceCodeDirectory(QString path);
     void exportAsFileStructure(QString path);
     void saveTopicToFileStructure(int topicId, QString pathLexicon);
     void addLanguage(QString language);
